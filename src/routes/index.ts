@@ -4,6 +4,6 @@ import UserControllers from "../controllers/UserControllers"
 const Route = express.Router()
 
 Route.post("/user", UserControllers.create)
-Route.get("/getUser", UserControllers.find)
+Route.get("/users", UserControllers.find)
 
 export default Route

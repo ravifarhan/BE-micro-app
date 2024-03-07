@@ -7,6 +7,7 @@ export default new class UserServices{
       const repository = AppDataSource.getRepository(User)
 
       const user = repository.create({
+        fullname: reqBody.fullname,
         username: reqBody.username,
         password: reqBody.password
       })
@@ -28,14 +29,30 @@ export default new class UserServices{
 
   async find() : Promise<any> {
     try {
-      const getUser = await AppDataSource
+      const users = await AppDataSource
         .getRepository(User)
         .createQueryBuilder("user")
         .getMany()
       
-      return getUser
+      return users
     } catch (error) {
       throw error
     }
   }
+
+//   async delete(id: number): Promise<any>{
+//     try {
+//         const repository = AppDataSource.createQueryBuilder()
+//         await repository 
+//           .delete()
+//           .from(User)
+//           .where("id = :id", { id: id })
+//           .execute()
+
+//         return 
+//     } catch (error) {
+//         throw error
+//     }
+// }
+
 }
