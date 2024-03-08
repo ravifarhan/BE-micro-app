@@ -9,7 +9,8 @@ export default new class UserServices{
       const user = repository.create({
         fullname: reqBody.fullname,
         username: reqBody.username,
-        password: reqBody.password
+        password: reqBody.password,
+        address: reqBody.address
       })
 
       await AppDataSource
@@ -40,19 +41,33 @@ export default new class UserServices{
     }
   }
 
-//   async delete(id: number): Promise<any>{
-//     try {
-//         const repository = AppDataSource.createQueryBuilder()
-//         await repository 
-//           .delete()
-//           .from(User)
-//           .where("id = :id", { id: id })
-//           .execute()
+  async delete(id: number): Promise<any>{
+    try {
+        const repository = AppDataSource.createQueryBuilder()
+        await repository 
+          .delete()
+          .from(User)
+          .where("id = :id", { id: id })
+          .execute()
 
-//         return 
-//     } catch (error) {
-//         throw error
-//     }
+        return 
+    } catch (error) {
+        throw error
+    }
+}
+
+// async delete(userId: number): Promise<UserInterface>{
+//   try {
+//       const repository =  AppDataSource.createQueryBuilder()
+//       await repository.delete()
+//                       .from(User)
+//                       .where("id = :id", { id: userId })
+//                       .execute()
+
+//       return 
+//   } catch (error) {
+//       throw error
+//   }
 // }
 
 }
