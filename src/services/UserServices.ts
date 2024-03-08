@@ -56,18 +56,5 @@ export default new class UserServices{
     }
 }
 
-// async delete(userId: number): Promise<UserInterface>{
-//   try {
-//       const repository =  AppDataSource.createQueryBuilder()
-//       await repository.delete()
-//                       .from(User)
-//                       .where("id = :id", { id: userId })
-//                       .execute()
-
-//       return 
-//   } catch (error) {
-//       throw error
-//   }
-// }
 
 }
