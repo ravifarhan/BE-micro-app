@@ -1,60 +1,79 @@
-import { AppDataSource } from "../data-source"
-import { User } from "../entity/User"
+import { AppDataSource } from "../data-source";
+import { User } from "../entity/User";
 
-export default new class UserServices{
-  async create(reqBody: any) : Promise<any> {
+enum Gender{
+  male = "male",
+  female = "female"
+}
+
+enum UserRole{
+  admin = "admin",
+  user = "user"
+}
+
+interface UserInterface {
+  fullname: string
+  username: string
+  password: string
+  address: string
+  gender: Gender
+  role: UserRole
+}
+
+export default new (class UserServices {
+  async create(reqBody: UserInterface): Promise<UserInterface> {
     try {
-      const repository = AppDataSource.getRepository(User)
+      console.log(reqBody);
+      
+      const repository = AppDataSource.getRepository(User);
 
       const user = repository.create({
         fullname: reqBody.fullname,
         username: reqBody.username,
         password: reqBody.password,
-        address: reqBody.address
-      })
+        address: reqBody.address,
+        gender: reqBody.gender,
+        role: reqBody.role,
+      });
 
-      await AppDataSource
-      .getRepository(User)
-      .createQueryBuilder()
-      .insert()
-      .into(User)
-      .values(user)
-      .execute()
+      await AppDataSource.getRepository(User)
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values(user)
+        .execute();
 
-    return user
-
+      return user;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async find() : Promise<any> {
+  async find(): Promise<UserInterface[]> {
     try {
-      const users = await AppDataSource
-        .getRepository(User)
+      const users = await AppDataSource.getRepository(User)
         .createQueryBuilder("user")
-        .getMany()
-      
-      return users
+        .getMany();
+
+      return users;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async delete(id: number): Promise<any>{
+  async delete(id: number): Promise<UserInterface> {
     try {
-        const repository = AppDataSource.createQueryBuilder()
-        await repository 
-          .delete()
-          .from(User)
-          .where("id = :id", { id: id })
-          .execute()
+      const repository = AppDataSource.createQueryBuilder();
+      await repository
+        .delete()
+        .from(User)
+        .where("id = :id", { id: id })
+        .execute();
 
-        return 
+      return;
     } catch (error) {
-        throw error
+      throw error;
     }
-}
-
-
-}
+  }
+  
+})
