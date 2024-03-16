@@ -12,7 +12,6 @@ interface ArticlesInterface {
 export default new (class ArticleServices {
   async create(reqBody: ArticlesInterface): Promise<ArticlesInterface> {
     try {
-      console.log(reqBody);
       
       const repository = AppDataSource.getRepository(Articles);
 
@@ -41,10 +40,24 @@ export default new (class ArticleServices {
       const articles = await AppDataSource.getRepository(Articles)
         .createQueryBuilder("articles")
         .leftJoinAndSelect("articles.user", "user" )
-        // .leftJoinAndSelect('articles.user', 'userId')
         .getMany()
 
       return articles;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async delete(id: number): Promise<ArticlesInterface> {
+    try {
+      const repository = AppDataSource.createQueryBuilder();
+      await repository
+        .delete()
+        .from(Articles)
+        .where("id = :id", { id: id })
+        .execute();
+
+      return;
     } catch (error) {
       throw error;
     }

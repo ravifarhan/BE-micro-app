@@ -12,6 +12,7 @@ enum UserRole{
 }
 
 interface UserInterface {
+  id: number
   fullname: string
   username: string
   password: string
@@ -23,7 +24,6 @@ interface UserInterface {
 export default new (class UserServices {
   async create(reqBody: UserInterface): Promise<UserInterface> {
     try {
-      console.log(reqBody);
       
       const repository = AppDataSource.getRepository(User);
 
@@ -61,8 +61,33 @@ export default new (class UserServices {
     }
   }
 
+  async update(id: number, reqBody: UserInterface): Promise<UserInterface>{
+    try {
+      const repository = AppDataSource.createQueryBuilder()
+      await repository
+        .update(User)
+        .set({ 
+            fullname: reqBody.fullname,
+            username: reqBody.username,
+            password: reqBody.password,
+            address: reqBody.address,
+            gender: reqBody.gender,
+            role: reqBody.role,
+        })
+        .where("id = :id", { id: id })
+        .execute()
+       
+      return ;
+    } catch (error) {
+      throw error
+    }
+  }
+
   async delete(id: number): Promise<UserInterface> {
     try {
+      
+      // console.log(id);
+
       const repository = AppDataSource.createQueryBuilder();
       await repository
         .delete()
